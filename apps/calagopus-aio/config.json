@@ -1,0 +1,35 @@
+{
+  "name": "Calagopus (AIO)",
+  "id": "calagopus-aio",
+  "available": true,
+  "short_desc": "All-in-one Calagopus game server management panel with integrated Wings.",
+  "author": "calagopus",
+  "port": 8000,
+  "categories": [
+    "gaming",
+    "utilities"
+  ],
+  "description": "THIS NEEDS TO BE FILLED IN",
+  "tipi_version": 1,
+  "version": "aio",
+  "source": "https://github.com/calagopus/panel",
+  "website": "https://github.com/calagopus/panel",
+  "exposable": true,
+  "supported_architectures": [
+    "arm64",
+    "amd64"
+  ],
+  "created_at": 1788307200000,
+  "updated_at": 1788307200000,
+  "dynamic_config": true,
+  "form_fields": [
+    {
+      "type": "random",
+      "label": "App encryption key",
+      "env_variable": "CALAGOPUS_ENCRYPTION_KEY",
+      "required": true,
+      "encoding": "hex",
+      "hint": "Used to encrypt sensitive values at rest. Generated once on install and must never change afterwards."
+    }
+  ]
+}

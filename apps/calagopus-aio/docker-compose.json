@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 2,
+  "services": [
+    {
+      "name": "calagopus-aio",
+      "image": "ghcr.io/calagopus/panel:aio",
+      "isMain": true,
+      "internalPort": 8000,
+      "restart": "unless-stopped",
+      "environment": [
+        { "key": "TZ", "value": "${TZ}" },
+        { "key": "PORT", "value": "8000" },
+        { "key": "REDIS_URL", "value": "redis://calagopus-aio-cache" },
+        { "key": "DATABASE_URL", "value": "postgresql://panel:panel@calagopus-aio-db/panel" },
+        { "key": "DATABASE_MIGRATE", "value": "true" },
+        { "key": "AIO_BASE_WINGS_CONFIGURATION", "value": "/config/wings-config.yml" },
+        { "key": "APP_DEBUG", "value": "false" },
+        { "key": "APP_LOG_DIRECTORY", "value": "/var/log/calagopus" },
+        { "key": "APP_PRIMARY", "value": "true" },
+        { "key": "APP_ENABLE_WINGS_PROXY", "value": "true" },
+        { "key": "APP_ENCRYPTION_KEY", "value": "${CALAGOPUS_ENCRYPTION_KEY}" },
+        { "key": "APP_USE_DECRYPTION_CACHE", "value": "true" },
+        { "key": "APP_USE_INTERNAL_CACHE", "value": "true" }
+      ],
+      "dns": ["1.1.1.1", "8.8.8.8", "9.9.9.9"],
+      "volumes": [
+        { "hostPath": "${APP_DATA_DIR}/data/calagopus", "containerPath": "/var/lib/calagopus" },
+        { "hostPath": "${APP_DATA_DIR}/data/logs", "containerPath": "/var/log/calagopus" },
+        { "hostPath": "${APP_DATA_DIR}/data/config", "containerPath": "/config" },
+        { "hostPath": "/var/run/docker.sock", "containerPath": "/var/run/docker.sock" },
+        { "hostPath": "/var/lib/docker/containers/", "containerPath": "/var/lib/docker/containers/" },
+        { "hostPath": "${APP_DATA_DIR}/data/wings/etc", "containerPath": "${APP_DATA_DIR}/data/wings/etc" },
+        { "hostPath": "${APP_DATA_DIR}/data/wings/lib", "containerPath": "${APP_DATA_DIR}/data/wings/lib" },
+        { "hostPath": "${APP_DATA_DIR}/data/wings/log", "containerPath": "${APP_DATA_DIR}/data/wings/log" },
+        { "hostPath": "${APP_DATA_DIR}/data/wings/tmp", "containerPath": "${APP_DATA_DIR}/data/wings/tmp" }
+      ],
+      "addPorts": [
+        { "hostPort": 2022, "containerPort": 2022 }
+      ],
+      "extraHosts": ["host.docker.internal:host-gateway"],
+      "dependsOn": ["calagopus-aio-db", "calagopus-aio-cache"]
+    },
+    {
+      "name": "calagopus-aio-db",
+      "image": "ghcr.io/calagopus/pgautoupgrade:18-alpine",
+      "restart": "unless-stopped",
+      "environment": [
+        { "key": "TZ", "value": "${TZ}" },
+        { "key": "POSTGRES_USER", "value": "panel" },
+        { "key": "POSTGRES_PASSWORD", "value": "panel" },
+        { "key": "POSTGRES_DB", "value": "panel" },
+        { "key": "PGDATA", "value": "/data" }
+      ],
+      "volumes": [
+        { "hostPath": "${APP_DATA_DIR}/data/postgres", "containerPath": "/data" }
+      ]
+    },
+    {
+      "name": "calagopus-aio-cache",
+      "image": "ghcr.io/calagopus/valkey:latest",
+      "restart": "unless-stopped",
+      "command": "--protected-mode no --save 60 1",
+      "environment": [
+        { "key": "TZ", "value": "${TZ}" }
+      ],
+      "volumes": [
+        { "hostPath": "${APP_DATA_DIR}/data/cache", "containerPath": "/data" }
+      ]
+    }
+  ]
+}
