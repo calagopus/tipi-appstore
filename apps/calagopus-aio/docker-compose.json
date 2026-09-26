@@ -29,15 +29,13 @@
         { "hostPath": "${APP_DATA_DIR}/data/config", "containerPath": "/config" },
         { "hostPath": "/var/run/docker.sock", "containerPath": "/var/run/docker.sock" },
         { "hostPath": "/var/lib/docker/containers/", "containerPath": "/var/lib/docker/containers/" },
-        { "hostPath": "${APP_DATA_DIR}/data/wings/etc", "containerPath": "${APP_DATA_DIR}/data/wings/etc" },
-        { "hostPath": "${APP_DATA_DIR}/data/wings/lib", "containerPath": "${APP_DATA_DIR}/data/wings/lib" },
-        { "hostPath": "${APP_DATA_DIR}/data/wings/log", "containerPath": "${APP_DATA_DIR}/data/wings/log" },
-        { "hostPath": "${APP_DATA_DIR}/data/wings/tmp", "containerPath": "${APP_DATA_DIR}/data/wings/tmp" }
+        { "hostPath": "${APP_DATA_DIR}/data/wings/etc", "containerPath": "/etc/calagopus-wings/" },
+        { "hostPath": "${APP_DATA_DIR}/data/wings/lib", "containerPath": "/var/lib/calagopus-wings/" },
+        { "hostPath": "${APP_DATA_DIR}/data/wings/log", "containerPath": "/var/log/calagopus-wings/" }
       ],
       "addPorts": [
         { "hostPort": 2022, "containerPort": 2022 }
       ],
-      "extraHosts": ["host.docker.internal:host-gateway"],
       "dependsOn": ["calagopus-aio-db", "calagopus-aio-cache"]
     },
     {
