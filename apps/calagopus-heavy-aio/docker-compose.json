@@ -54,7 +54,7 @@
         { "key": "POSTGRES_USER", "value": "panel" },
         { "key": "POSTGRES_PASSWORD", "value": "panel" },
         { "key": "POSTGRES_DB", "value": "panel" },
-        { "key": "PGDATA", "value": "/data" }
+        { "key": "PGDATA", "value": "/data/pgdata" }
       ],
       "volumes": [
         { "hostPath": "${APP_DATA_DIR}/data/postgres", "containerPath": "/data" }
