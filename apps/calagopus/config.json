@@ -1,8 +1,8 @@
 {
-  "name": "Calagopus (Heavy AIO)",
-  "id": "calagopus-heavy-aio",
+  "name": "Calagopus",
+  "id": "calagopus",
   "available": true,
-  "short_desc": "All-in-one Calagopus panel with the heavy image: extensions and binary add-ons enabled.",
+  "short_desc": "Calagopus game server management panel only. Connect your own Wings nodes to run game servers.",
   "author": "calagopus",
   "port": 8000,
   "categories": [
@@ -11,7 +11,7 @@
   ],
   "description": "A modern game server management panel built in Rust. Deploy, monitor, and manage Minecraft, Hytale, and other game servers with industry-leading performance.",
   "tipi_version": 1,
-  "version": "heavy-aio",
+  "version": "latest",
   "source": "https://github.com/calagopus/panel",
   "website": "https://calagopus.com",
   "exposable": true,

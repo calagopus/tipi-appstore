@@ -9,11 +9,11 @@
     "gaming",
     "utilities"
   ],
-  "description": "THIS NEEDS TO BE FILLED IN",
+  "description": "A modern game server management panel built in Rust. Deploy, monitor, and manage Minecraft, Hytale, and other game servers with industry-leading performance.",
   "tipi_version": 1,
   "version": "aio",
   "source": "https://github.com/calagopus/panel",
-  "website": "https://github.com/calagopus/panel",
+  "website": "https://calagopus.com",
   "exposable": true,
   "supported_architectures": [
     "arm64",
