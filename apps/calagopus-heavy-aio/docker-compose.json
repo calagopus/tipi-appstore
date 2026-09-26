@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "services": [
     {
-      "name": "calagopus-heavy-aio",
+      "name": "web",
       "image": "ghcr.io/calagopus/panel:heavy-aio",
       "isMain": true,
       "internalPort": 8000,
@@ -11,8 +11,8 @@
       "environment": [
         { "key": "TZ", "value": "${TZ}" },
         { "key": "PORT", "value": "8000" },
-        { "key": "REDIS_URL", "value": "redis://calagopus-heavy-aio-cache" },
-        { "key": "DATABASE_URL", "value": "postgresql://panel:panel@calagopus-heavy-aio-db/panel" },
+        { "key": "REDIS_URL", "value": "redis://cache" },
+        { "key": "DATABASE_URL", "value": "postgresql://panel:panel@db/panel" },
         { "key": "DATABASE_MIGRATE", "value": "true" },
         { "key": "AIO_BASE_WINGS_CONFIGURATION", "value": "/config/wings-config.yml" },
         { "key": "APP_DEBUG", "value": "false" },
@@ -42,12 +42,12 @@
         { "hostPort": 2022, "containerPort": 2022 }
       ],
       "dependsOn": {
-        "calagopus-heavy-aio-db": { "condition": "service_healthy" },
-        "calagopus-heavy-aio-cache": { "condition": "service_started" }
+        "db": { "condition": "service_healthy" },
+        "cache": { "condition": "service_started" }
       }
     },
     {
-      "name": "calagopus-heavy-aio-db",
+      "name": "db",
       "image": "ghcr.io/calagopus/pgautoupgrade:18-alpine",
       "restart": "unless-stopped",
       "healthCheck": {
@@ -61,14 +61,14 @@
         { "key": "POSTGRES_USER", "value": "panel" },
         { "key": "POSTGRES_PASSWORD", "value": "panel" },
         { "key": "POSTGRES_DB", "value": "panel" },
-        { "key": "PGDATA", "value": "/data/pgdata" }
+        { "key": "PGDATA", "value": "/data" }
       ],
       "volumes": [
         { "hostPath": "${APP_DATA_DIR}/data/postgres", "containerPath": "/data" }
       ]
     },
     {
-      "name": "calagopus-heavy-aio-cache",
+      "name": "cache",
       "image": "ghcr.io/calagopus/valkey:latest",
       "restart": "unless-stopped",
       "command": "--protected-mode no --save 60 1",
