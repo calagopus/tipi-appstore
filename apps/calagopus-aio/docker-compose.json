@@ -36,12 +36,21 @@
       "addPorts": [
         { "hostPort": 2022, "containerPort": 2022 }
       ],
-      "dependsOn": ["calagopus-aio-db", "calagopus-aio-cache"]
+      "dependsOn": {
+        "calagopus-aio-db": { "condition": "service_healthy" },
+        "calagopus-aio-cache": { "condition": "service_started" }
+      }
     },
     {
       "name": "calagopus-aio-db",
       "image": "ghcr.io/calagopus/pgautoupgrade:18-alpine",
       "restart": "unless-stopped",
+      "healthCheck": {
+        "test": "pg_isready -h 127.0.0.1 -U panel -d panel",
+        "interval": "5s",
+        "timeout": "5s",
+        "retries": 60
+      },
       "environment": [
         { "key": "TZ", "value": "${TZ}" },
         { "key": "POSTGRES_USER", "value": "panel" },
